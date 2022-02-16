@@ -25,7 +25,7 @@ export default (password: string) => {
   let lettersAmount = password.match(/[a-zA-Z]/gi);
 
   if (lettersAmount) {
-    if (lettersAmount?.length! < 4) {
+    if (lettersAmount?.length! < 3) {
       errors.push({
         msg: "The password must contain at least 3 letters!",
         id: uuid(),
@@ -55,7 +55,7 @@ export default (password: string) => {
   let numbersAmount = password.match(/[0-9]/g);
 
   if (numbersAmount) {
-    if (numbersAmount.length < 3) {
+    if (numbersAmount.length < 2) {
       errors.push({
         msg: "The password must contain at least 2 numbers!",
         id: uuid(),

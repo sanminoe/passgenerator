@@ -20,9 +20,9 @@ function getFreeSlots(arr: string[], indexExclude: number): number[] {
 
 function generatePassword(length: number, options: Options) {
   let wordIndex = 0;
-  const minLength = 7;
+  const minLength = 6;
 
-  const len = length < 7 ? minLength : length;
+  const len = length < minLength ? minLength : length;
 
   let wordToInsert: string = "";
   const letters: string = "abcdefghijklmnopqrstuvwxyz";
@@ -46,6 +46,7 @@ function generatePassword(length: number, options: Options) {
     word: "",
     start: 0,
   };
+
   // generate a numbers of words. less than the maximus ( len );
   if (options.includeWords) {
     let biggest: WordInfo[] = [];
@@ -91,7 +92,7 @@ function generatePassword(length: number, options: Options) {
   // replace a random amount of letters
   let freeSlots = getFreeSlots(passwordCharacters, wordInserted.start);
 
-  let numbersToInsert = Math.floor(Math.random() * (availableSpace - wordInserted.word.length));
+  let numbersToInsert = Math.floor(Math.random() * (availableSpace - wordInserted.word.length)) + 1;
 
   if (options.includeNumbers) {
     // get Available space left side and right side of the word inserted

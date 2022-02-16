@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, SyntheticEvent, useEffect, useState } from "react";
 import OptionCheckBox from "../components/OptionCheckBox";
 
 import generatePassword from "../helpers/generatePassword";
@@ -26,15 +26,15 @@ const strengthInfo: StrengthData[] = [
 ];
 export default () => {
   const [passStrength, setPassStrength] = useState<StrengthData>(strengthInfo[1]);
-  let [passLength, setPassLength] = useState(7);
-  const [rangeLength, setRangeLength] = useState(7);
+  let [passLength, setPassLength] = useState(6);
+  const [rangeLength, setRangeLength] = useState(6);
 
   let [options, setOptions] = useState<Options>({
-    includeNumbers: false,
-    includeSymbols: false,
-    includeUpperCase: false,
-    includeLowerCase: false,
-    includeWords: true,
+    includeNumbers: true,
+    includeSymbols: true,
+    includeUpperCase: true,
+    includeLowerCase: true,
+    includeWords: false,
   });
 
   const [errors, setErrors] = useState<Error[]>([]);
@@ -60,6 +60,23 @@ export default () => {
     setPassLength(rangeLength);
   };
 
+  const optionsShowHandler = () => {
+    setIsOptionsOpen(!isOptionsOpen);
+  };
+
+  const changePassLengthInputHandler = (e: SyntheticEvent<HTMLInputElement>) => {
+    if (+e.currentTarget.value > 64) {
+      setRangeLength(64);
+      setPassLength(64);
+    } else if (+e.currentTarget.value < 6) {
+      setRangeLength(6);
+      setPassLength(6);
+    } else {
+      setRangeLength(+e.currentTarget.value);
+      setPassLength(+e.currentTarget.value);
+    }
+  };
+
   useEffect(() => {
     setErrors(validatePassword(password));
   }, [password]);
@@ -75,7 +92,7 @@ export default () => {
   }, [errors]);
 
   return (
-    <div className="w-5/6 flex flex-col justify-center my-4 rounded">
+    <div className="w-5/6 md:w-2/5 flex flex-col justify-center my-4 rounded">
       <section className="flex flex-col items-center">
         <div className="text-white mt-2 text-xl">
           <h3>Password Generator</h3>
@@ -86,7 +103,7 @@ export default () => {
               <input
                 type="text"
                 name="pass"
-                className=" border-b border-custom-grey text-white w-full bg-transparent p-1 text-center mb-1 outline-none"
+                className="bg-custom-grey text-white w-full p-1 text-center mb-1 outline-none rounded"
                 value={password}
                 onChange={(e) => setPassword(e.currentTarget.value)}
               />
@@ -110,13 +127,15 @@ export default () => {
           </section>
 
           <section className="text-white mt-4">
-            <div className="flex justify-between items-center">
-              <h3>Options</h3>
+            <div
+              className="flex justify-between items-center bg-custom-grey rounded hover:bg-[rgb(167,167,167)] cursor-pointer"
+              onClick={optionsShowHandler}
+            >
+              <h3 className="ml-2">Options</h3>
               <button
-                onClick={() => setIsOptionsOpen(!isOptionsOpen)}
                 className={`transform ${
                   isOptionsOpen ? "rotate-180" : "rotate-0"
-                } p-1 cursor-pointer`}
+                } p-1 cursor-pointer mr-2`}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -134,7 +153,7 @@ export default () => {
                 </svg>
               </button>
             </div>
-            <div className=" bg-[rgb(0,0,0,0.2)] flex justify-center rounded mt-3">
+            <div className=" bg-[#4e4e4e33] flex justify-center rounded mt-3">
               <article
                 className="w-11/12 mt-2 overflow-hidden"
                 style={{ height: isOptionsOpen ? "100%" : "1px" }}
@@ -148,7 +167,7 @@ export default () => {
                     className="w-4/5 form-range appearance-none h-0.5 p-0 rounded slider-thumb outline-none mr-4"
                     value={rangeLength}
                     max="64"
-                    min="7"
+                    min="6"
                     onChange={(e) => setRangeLength(+e.currentTarget.value)}
                     onMouseUp={sendLengthHandler}
                     onTouchEnd={sendLengthHandler}
@@ -159,6 +178,7 @@ export default () => {
                     type="number"
                     className="bg-custom-grey rounded text-center"
                     value={rangeLength}
+                    onChange={changePassLengthInputHandler}
                   />
                 </div>
                 <div className="flex flex-col mt-4">
