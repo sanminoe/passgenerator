@@ -1,21 +1,8 @@
 html {
-  background: black;
+  background: #212121;
   height: 100%;
   background-repeat: no-repeat;
   background-size: contain;
-}
-
-.gradient-bg {
-  background-image: linear-gradient(
-    180deg,
-    rgba(132, 144, 251, 0.29) 0%,
-    rgba(43, 27, 220, 0.29) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.39);
-}
-
-.box-transparent {
-  color: black;
 }
 
 input[type="range"] {
@@ -24,10 +11,10 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-thumb {
   appearance: none;
-  border: 1px solid black;
+  border: 3px solid rgb(41, 41, 41);
   width: 24px;
   height: 24px;
-  background-color: white;
+  background-color: #e3d44c;
   border-radius: 50%;
   cursor: pointer;
   margin-top: -11.4px;

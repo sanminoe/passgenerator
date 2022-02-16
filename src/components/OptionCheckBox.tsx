@@ -9,10 +9,10 @@ interface OptionCheckBoxProps {
 
 export default function OptionCheckBox(props: OptionCheckBoxProps) {
   return (
-    <div className="flex items-center mb-2" id={props.id}>
+    <div className="flex items-center mb-3" id={props.id}>
       <div
-        className={`w-4 h-4 box-transparent border rounded mr-2 ${
-          props.value ? "bg-green-300" : "bg-white"
+        className={`w-6 h-6 box-transparent border rounded mr-2 ${
+          props.value ? "bg-green-600" : "bg-custom-grey"
         }`}
         onClick={() => props.onClick(props.id)}
       ></div>

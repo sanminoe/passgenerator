@@ -70,7 +70,7 @@ export default (password: string) => {
 
   // check symbols
 
-  let symbolsAmount = password.match(/[!@#$%^&*()_+~`|}{[\]:;?><,./\-=]/g);
+  let symbolsAmount = password.match(/[!@#$%^&*()_+~`|}{[\\\]:;?><,./\-=]/g);
 
   if (!symbolsAmount) {
     errors.push({
