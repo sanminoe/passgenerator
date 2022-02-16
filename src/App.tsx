@@ -1,15 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Generator from "./Pages/Generator";
-import im from "./GitHub-Mark-Light-32px.png";
 import "./App.css";
 function App() {
   return (
     <>
-      {/* <header className="flex justify-center text-white border-b border-gray-600">
-        <article className="my-2">
-          <h1>Logo</h1>
-        </article>
-      </header> */}
       <div className="App">
         <div className="flex justify-center items-center">
           <Generator />
@@ -20,8 +14,9 @@ function App() {
           href="https://github.com/sanminoe/passgenerator"
           className="text-white flex-col justify-center text-center"
           target="_blank"
+          rel="noreferrer"
         >
-          <img className="mx-auto" src="./GitHub-Mark-Light-32px.png" />
+          <img className="mx-auto" src="./GitHub-Mark-Light-32px.png" alt="github logo" />
           <p>GitHub</p>
         </a>
       </footer>

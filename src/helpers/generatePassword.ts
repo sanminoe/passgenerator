@@ -19,7 +19,6 @@ function getFreeSlots(arr: string[], indexExclude: number): number[] {
 }
 
 function generatePassword(length: number, options: Options) {
-  let wordIndex = 0;
   const minLength = 6;
 
   const len = length < minLength ? minLength : length;
@@ -84,7 +83,7 @@ function generatePassword(length: number, options: Options) {
     let start = Math.floor(Math.random() * (len - wordToInsert.length));
     wordInserted.start = start;
 
-    let mw = passwordCharacters.splice(start, wordToInsert.length, wordToInsert);
+    passwordCharacters.splice(start, wordToInsert.length, wordToInsert);
   }
 
   // number included

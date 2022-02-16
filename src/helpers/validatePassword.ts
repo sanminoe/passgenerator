@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-export default (password: string) => {
+const validatePassword = (password: string) => {
   let errors = [];
 
   // des
@@ -79,7 +79,6 @@ export default (password: string) => {
     });
   }
 
-  console.log(errors);
-
   return errors;
 };
+export default validatePassword;

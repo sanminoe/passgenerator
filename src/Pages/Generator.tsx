@@ -1,4 +1,4 @@
-import React, { FormEvent, SyntheticEvent, useEffect, useState } from "react";
+import React, { SyntheticEvent, useEffect, useState } from "react";
 import OptionCheckBox from "../components/OptionCheckBox";
 
 import generatePassword from "../helpers/generatePassword";
@@ -24,7 +24,7 @@ const strengthInfo: StrengthData[] = [
     color: "bg-green-500",
   },
 ];
-export default () => {
+const Generator = () => {
   const [passStrength, setPassStrength] = useState<StrengthData>(strengthInfo[1]);
   let [passLength, setPassLength] = useState(6);
   const [rangeLength, setRangeLength] = useState(6);
@@ -237,3 +237,5 @@ export default () => {
     </div>
   );
 };
+
+export default Generator;
