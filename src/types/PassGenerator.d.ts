@@ -1,7 +1,7 @@
 export interface Options {
   includeUpperCase: boolean;
-  includeNumbers: boolean;
   includeLowerCase: boolean;
+  includeNumbers: boolean;
   includeSymbols: boolean;
   includeWords: boolean;
 }
