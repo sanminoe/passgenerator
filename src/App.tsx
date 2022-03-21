@@ -5,21 +5,10 @@ function App() {
   return (
     <>
       <div className="App">
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center mt-4">
           <Generator />
         </div>
       </div>
-      <footer className="flex justify-center mt-2">
-        <a
-          href="https://github.com/sanminoe/passgenerator"
-          className="text-white flex-col justify-center text-center"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <img className="mx-auto" src="./GitHub-Mark-Light-32px.png" alt="github logo" />
-          <p>GitHub</p>
-        </a>
-      </footer>
     </>
   );
 }

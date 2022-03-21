@@ -1,7 +1,33 @@
 import { v4 as uuid } from "uuid";
 
 const validatePassword = (password: string) => {
-  let errors = [];
+  let errors = [
+    {
+      id: uuid(),
+      msg: "Too short!",
+      valid: true,
+    },
+    {
+      id: uuid(),
+      msg: "At least 3 letters!",
+      valid: true,
+    },
+    {
+      id: uuid(),
+      msg: "At least 1 uppercase letter!",
+      valid: true,
+    },
+    {
+      id: uuid(),
+      msg: "At least 2 numbers!",
+      valid: true,
+    },
+    {
+      id: uuid(),
+      msg: "Contains 1 special symbol i.e: !@*&$+-!",
+      valid: true,
+    },
+  ];
 
   // des
   // length > 6
@@ -14,10 +40,7 @@ const validatePassword = (password: string) => {
 
   // check password length
   if (password.length < 6) {
-    errors.push({
-      msg: "Password too short!",
-      id: uuid(),
-    });
+    errors[0].valid = false; // pass too short!
   }
 
   // check for letters
@@ -26,29 +49,18 @@ const validatePassword = (password: string) => {
 
   if (lettersAmount) {
     if (lettersAmount?.length! < 3) {
-      errors.push({
-        msg: "The password must contain at least 3 letters!",
-        id: uuid(),
-      });
+      errors[1].valid = false; // The password must contain at least 3 letters!
+
       // check for uppercase letters
     }
     let uppercase = password.search(/[A-Z]/g);
 
     if (uppercase === -1) {
-      errors.push({
-        msg: "The password must contain at least 1 uppercase letter!",
-        id: uuid(),
-      });
+      errors[2].valid = false; // The password must contain at least 1 uppercase letter!
     }
   } else {
-    errors.push({
-      msg: "The password must contain at least 3 letters!",
-      id: uuid(),
-    });
-    errors.push({
-      msg: "The password must contain at least 1 uppercase letter!",
-      id: uuid(),
-    });
+    errors[1].valid = false; // The password must contain at least 3 letters!
+    errors[2].valid = false; // The password must contain at least 1 uppercase letter!
   }
 
   // check for numbers
@@ -56,16 +68,10 @@ const validatePassword = (password: string) => {
 
   if (numbersAmount) {
     if (numbersAmount.length < 2) {
-      errors.push({
-        msg: "The password must contain at least 2 numbers!",
-        id: uuid(),
-      });
+      errors[3].valid = false; // The password must contain at least 2 numbers!
     }
   } else {
-    errors.push({
-      msg: "The password must contain at least 2 numbers!",
-      id: uuid(),
-    });
+    errors[3].valid = false; // The password must contain at least 2 numbers!
   }
 
   // check symbols
@@ -73,10 +79,7 @@ const validatePassword = (password: string) => {
   let symbolsAmount = password.match(/[!@#$%^&*()_+~`|}{[\\\]:;?><,./\-=]/g);
 
   if (!symbolsAmount) {
-    errors.push({
-      msg: "The password must contain 1 special symbol i.e: !@*&$+-!",
-      id: uuid(),
-    });
+    errors[4].valid = false; // The password must contain 1 special symbol i.e: !@*&$+-!
   }
 
   return errors;

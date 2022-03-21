@@ -14,6 +14,7 @@ export interface WordInfo {
 export interface Error {
   msg: string;
   id: string;
+  valid: boolean;
 }
 
 export function generatePassword(length: number, options: Options): string;

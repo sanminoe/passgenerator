@@ -1,5 +1,6 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
 import OptionCheckBox from "../components/OptionCheckBox";
+import OptionsCheckBoxes from "../components/OptionsCheckBoxes";
 
 import generatePassword from "../helpers/generatePassword";
 import generatePhrase from "../helpers/generatePhrase";
@@ -25,14 +26,21 @@ const strengthInfo: StrengthData[] = [
     color: "bg-orange-500",
   },
   {
-    name: "Strong",
+    name: "Good",
     color: "bg-green-500",
+  },
+  {
+    name: "Strong",
+    color: "bg-blue-700",
   },
 ];
 const Generator = () => {
-  const [passStrength, setPassStrength] = useState<StrengthData>(
-    strengthInfo[1]
+  const [passStrength, setPassStrength] = useState(0);
+
+  let [strength, setStrength] = useState<StrengthData>(
+    strengthInfo[passStrength]
   );
+
   let [passLength, setPassLength] = useState(6);
   const [rangeLength, setRangeLength] = useState(6);
 
@@ -43,9 +51,10 @@ const Generator = () => {
     includeLowerCase: true,
     includeWords: false,
   });
-  const [generatorType, setGeneratorType] = useState("phrase");
+  const [generatorType, setGeneratorType] = useState("password");
 
   const [errors, setErrors] = useState<Error[]>([]);
+
   let [password, setPassword] = useState(generatePassword(passLength, options));
 
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
@@ -130,17 +139,22 @@ const Generator = () => {
   }, [password]);
 
   useEffect(() => {
-    if (errors.length >= 3) {
-      setPassStrength(strengthInfo[1]);
-    } else if (errors.length >= 1 && errors.length < 3) {
-      setPassStrength(strengthInfo[2]);
-    } else {
-      setPassStrength(strengthInfo[3]);
+    let cErrors = 0;
+
+    for (const err of errors) {
+      if (!err.valid) {
+        cErrors += 1;
+      }
     }
+
+    if (cErrors === 0) setStrength(strengthInfo[4]);
+    else if (cErrors === 1) setStrength(strengthInfo[3]);
+    else if (cErrors === 2) setStrength(strengthInfo[2]);
+    else setStrength(strengthInfo[1]);
   }, [errors]);
 
   return (
-    <div className="w-5/6 md:w-2/5 flex flex-col justify-center my-4 rounded">
+    <div className="w-5/6 md:w-2/5 flex flex-col justify-center rounded">
       <section className="flex flex-col items-center">
         <div className="flex w-11/12 text-white my-2">
           <div className="flex justify-evenly w-full">
@@ -179,9 +193,9 @@ const Generator = () => {
               />
               {generatorType === "password" ? (
                 <div
-                  className={`flex flex-col w-full text-center items-center justify-center mt-2 rounded ${passStrength.color} text-white`}
+                  className={`flex flex-col w-full text-center items-center justify-center mt-2 rounded ${strength.color} text-white`}
                 >
-                  <p>{passStrength.name}</p>
+                  <p>{strength.name}</p>
                 </div>
               ) : null}
             </div>
@@ -190,10 +204,48 @@ const Generator = () => {
           {generatorType === "password" && canGenerate ? (
             <section className={`mt-4`}>
               {/* Validation */}
-              <ul className="flex flex-col mx-1 items-center bg-[rgb(220,38,38,0.1)] rounded">
+              <ul className="flex flex-col mx-1 items-start rounded">
                 {errors.map((e: Error) => (
-                  <li key={e.id} className="text-red-500">
-                    {e.msg}
+                  <li
+                    key={e.id}
+                    className={`${
+                      e.valid ? "text-green-500" : "text-red-500"
+                    } flex items-center text-sm`}
+                  >
+                    <span className="mr-2">
+                      {e.valid ? (
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          className="w-6 h-6"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      )}
+                    </span>
+                    <span>{e.msg}</span>
                   </li>
                 ))}
               </ul>
@@ -259,63 +311,15 @@ const Generator = () => {
                     onChange={changePassLengthInputHandler}
                   />
                 </div>
-                <div className="flex flex-col mt-4">
-                  <OptionCheckBox
-                    value={options.includeUpperCase}
-                    title="Include uppercase letters"
-                    onClick={optionsChangeHandler}
-                    id={"includeUpperCase"}
-                  />
-                  {generatorType === "password" ? (
-                    <OptionCheckBox
-                      value={options.includeNumbers}
-                      title="Include numbers"
-                      onClick={optionsChangeHandler}
-                      id={"includeNumbers"}
-                    />
-                  ) : null}
-                  <OptionCheckBox
-                    value={options.includeLowerCase}
-                    title="Include lowercase letters"
-                    onClick={optionsChangeHandler}
-                    id={"includeLowerCase"}
-                  />
-                  {generatorType === "password" ? (
-                    <OptionCheckBox
-                      value={options.includeSymbols}
-                      title="Include special symbols"
-                      onClick={optionsChangeHandler}
-                      id={"includeSymbols"}
-                    />
-                  ) : null}
-                  {generatorType === "password" ? (
-                    <OptionCheckBox
-                      value={options.includeWords}
-                      title="Include word"
-                      onClick={optionsChangeHandler}
-                      id={"includeWords"}
-                    />
-                  ) : null}
-
-                  {generatorType === "phrase" ? (
-                    <div className="mb-4">
-                      <label className="flex">
-                        <div className="mr-4">
-                          <span>Separator</span>
-                        </div>
-                        <div>
-                          <input
-                            type="text"
-                            placeholder="Separator"
-                            onChange={(e) => setSeparator(e.target.value)}
-                            value={separator}
-                            className="bg-[#4e4e4e33] pl-2 rounded-sm text-xl"
-                          />
-                        </div>
-                      </label>
-                    </div>
-                  ) : null}
-                </div>
+                <OptionsCheckBoxes
+                  options={options}
+                  separator={separator}
+                  onChangeSeparator={(e) => {
+                    setSeparator(e.currentTarget.value);
+                  }}
+                  optionsChangeHandler={optionsChangeHandler}
+                  generatorType={generatorType}
+                />
               </article>
             </div>
           </section>
@@ -349,6 +353,21 @@ const Generator = () => {
           </div>
         </div>
       </section>
+      <footer className="flex justify-center mt-2">
+        <a
+          href="https://github.com/sanminoe/passgenerator"
+          className="text-white flex-col justify-center text-center"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img
+            className="mx-auto w-6"
+            src="./GitHub-Mark-Light-32px.png"
+            alt="github logo"
+          />
+          <p>GitHub</p>
+        </a>
+      </footer>
     </div>
   );
 };
