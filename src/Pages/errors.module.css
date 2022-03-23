@@ -1,0 +1,12 @@
+.errors {
+  font-size: clamp(0.95rem, 2.5vw, 1.35rem);
+}
+.pass {
+  font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+}
+.strength {
+  font-size: clamp(1rem, 2.5vw, 1.26rem);
+}
+.option {
+  font-size: clamp(0.97rem, 2.5vw, 1.46rem);
+}

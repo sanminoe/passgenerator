@@ -3,7 +3,7 @@ export interface Options {
   includeLowerCase: boolean;
   includeNumbers: boolean;
   includeSymbols: boolean;
-  includeWords: boolean;
+  // includeWords: boolean;
 }
 
 export interface WordInfo {
