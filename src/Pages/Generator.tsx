@@ -7,6 +7,8 @@ import generatePhrase from "../helpers/generatePhrase";
 import validatePassword from "../helpers/validatePassword";
 import { Error, Options } from "../types/PassGenerator";
 
+import classes from "./errors.module.css";
+
 interface StrengthData {
   name: string;
   color: string;
@@ -49,7 +51,7 @@ const Generator = () => {
     includeSymbols: true,
     includeUpperCase: true,
     includeLowerCase: true,
-    includeWords: false,
+    // includeWords: false,
   });
   const [generatorType, setGeneratorType] = useState("password");
 
@@ -57,7 +59,7 @@ const Generator = () => {
 
   let [password, setPassword] = useState(generatePassword(passLength, options));
 
-  const [isOptionsOpen, setIsOptionsOpen] = useState(false);
+  const [isOptionsOpen, setIsOptionsOpen] = useState(true);
 
   const [separator, setSeparator] = useState(" ");
 
@@ -67,8 +69,7 @@ const Generator = () => {
     options.includeNumbers ||
     options.includeLowerCase ||
     options.includeSymbols ||
-    options.includeUpperCase ||
-    options.includeWords
+    options.includeUpperCase
   ) {
     canGenerate = true;
   } else {
@@ -185,7 +186,7 @@ const Generator = () => {
               <input
                 type="text"
                 name="pass"
-                className="bg-custom-grey text-white w-full p-1 text-center mb-1 outline-none rounded"
+                className={`bg-custom-grey text-white w-full p-1 text-center mb-1 outline-none rounded ${classes.pass}`}
                 value={password}
                 onChange={(e) => setPassword(e.currentTarget.value)}
                 disabled={!canGenerate}
@@ -193,7 +194,7 @@ const Generator = () => {
               />
               {generatorType === "password" ? (
                 <div
-                  className={`flex flex-col w-full text-center items-center justify-center mt-2 rounded ${strength.color} text-white`}
+                  className={`flex flex-col w-full text-center items-center justify-center mt-2 rounded ${classes.strength} ${strength.color} text-white`}
                 >
                   <p>{strength.name}</p>
                 </div>
@@ -201,16 +202,18 @@ const Generator = () => {
             </div>
           </article>
 
-          {generatorType === "password" && canGenerate ? (
+          {generatorType === "password" ? (
             <section className={`mt-4`}>
               {/* Validation */}
-              <ul className="flex flex-col mx-1 items-start rounded">
+              <ul
+                className={`flex flex-col mx-1 items-start rounded ${classes.errors}`}
+              >
                 {errors.map((e: Error) => (
                   <li
                     key={e.id}
                     className={`${
                       e.valid ? "text-green-500" : "text-red-500"
-                    } flex items-center text-sm`}
+                    } flex items-center`}
                   >
                     <span className="mr-2">
                       {e.valid ? (
@@ -257,7 +260,7 @@ const Generator = () => {
               className="flex justify-between items-center bg-custom-grey rounded hover:bg-[rgb(167,167,167)] cursor-pointer"
               onClick={optionsShowHandler}
             >
-              <h3 className="ml-2">Options</h3>
+              <h3 className={`ml-2 ${classes.errors}`}>Options</h3>
               <button
                 className={`transform ${
                   isOptionsOpen ? "rotate-180" : "rotate-0"
@@ -284,7 +287,7 @@ const Generator = () => {
                 className="w-11/12 mt-2 overflow-hidden"
                 style={{ height: isOptionsOpen ? "100%" : "1px" }}
               >
-                <p>
+                <p className={classes.option}>
                   {generatorType === "password"
                     ? "Password length"
                     : "Number of Words"}
@@ -294,7 +297,9 @@ const Generator = () => {
                     type="range"
                     name="passLength"
                     id="passwordLength"
-                    className="w-4/5 form-range appearance-none h-0.5 p-0 rounded slider-thumb outline-none mr-4"
+                    className={
+                      "w-4/5 form-range appearance-none h-0.5 p-0 rounded slider-thumb outline-none mr-4"
+                    }
                     value={rangeLength}
                     max="64"
                     min={generatorType === "password" ? "6" : "3"}
@@ -306,7 +311,10 @@ const Generator = () => {
                     min={generatorType === "password" ? "6" : "3"}
                     max="48"
                     type="number"
-                    className="bg-custom-grey rounded text-center"
+                    className={
+                      "bg-custom-grey rounded text-center" +
+                      ` ${classes.option}`
+                    }
                     value={rangeLength}
                     onChange={changePassLengthInputHandler}
                   />
@@ -327,7 +335,13 @@ const Generator = () => {
         <div className="w-full md:w-5/6">
           <div>
             <button
-              className="w-full mt-4 h-12 text-xl rounded bg-custom-yellow text-black"
+              className={
+                "w-full mt-4 h-12 rounded bg-custom-yellow text-black" +
+                ` ${classes.option} ${
+                  !canGenerate && "cursor-not-allowed bg-custom-grey"
+                }`
+              }
+              disabled={!canGenerate}
               onClick={() =>
                 setPassword(
                   generatorType === "password"
@@ -340,12 +354,18 @@ const Generator = () => {
                 )
               }
             >
-              Generate
+              {canGenerate ? "Generate" : "You must choose at least 1 option"}
             </button>
           </div>
           <div>
             <button
-              className="w-full my-4 h-12 rounded bg-custom-grey text-white"
+              disabled={!canGenerate}
+              className={
+                "w-full my-4 h-12 rounded bg-custom-grey text-white" +
+                ` ${classes.option}  ${
+                  !canGenerate && "cursor-not-allowed bg-custom-grey"
+                }`
+              }
               onClick={copyPasswordHandler}
             >
               Copy

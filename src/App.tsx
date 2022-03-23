@@ -1,11 +1,12 @@
 import React from "react";
 import Generator from "./Pages/Generator";
 import "./App.css";
+
 function App() {
   return (
     <>
-      <div className="App">
-        <div className="flex justify-center items-center mt-4">
+      <div className="App w-full h-screen">
+        <div className="flex justify-center items-center">
           <Generator />
         </div>
       </div>

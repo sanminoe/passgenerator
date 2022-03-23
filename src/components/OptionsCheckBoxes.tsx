@@ -47,14 +47,6 @@ const OptionsCheckBoxes = ({
           id={"includeSymbols"}
         />
       ) : null}
-      {generatorType === "password" ? (
-        <OptionCheckBox
-          value={options.includeWords}
-          title="Include word"
-          onClick={optionsChangeHandler}
-          id={"includeWords"}
-        />
-      ) : null}
 
       {generatorType === "phrase" ? (
         <div className="mb-4">
