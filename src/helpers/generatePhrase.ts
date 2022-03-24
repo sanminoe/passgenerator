@@ -15,13 +15,9 @@ const generatePhrase = (
 
   for (let i = 0; i < length; i++) {
     if (includelowercase && includeuppercase === false) {
-      words.push(
-        wordsL[Math.floor(Math.random() * wordsL.length)].toLowerCase()
-      );
+      words.push(wordsL[Math.floor(Math.random() * wordsL.length)].toLowerCase());
     } else if (includeuppercase && includelowercase === false) {
-      words.push(
-        wordsL[Math.floor(Math.random() * wordsL.length)].toUpperCase()
-      );
+      words.push(wordsL[Math.floor(Math.random() * wordsL.length)].toUpperCase());
     } else {
       words.push(wordsL[Math.floor(Math.random() * wordsL.length)]);
     }
