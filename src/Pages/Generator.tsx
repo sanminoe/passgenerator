@@ -1,6 +1,8 @@
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import OptionCheckBox from "../components/OptionCheckBox";
-import OptionsCheckBoxes from "../components/OptionsCheckBoxes";
+import OptionCheckBox from "../components/CheckBox/OptionCheckBox";
+import OptionsCheckBoxes from "../components/CheckBox/OptionsCheckBoxes";
+import ErrorBox from "../components/ErrorBox/ErrorBox";
+import ArrowButton from "../components/UI/ArrowButton/ArrowButton";
 
 import generatePassword from "../helpers/generatePassword";
 import generatePhrase from "../helpers/generatePhrase";
@@ -39,9 +41,7 @@ const strengthInfo: StrengthData[] = [
 const Generator = () => {
   const [passStrength, setPassStrength] = useState(0);
 
-  let [strength, setStrength] = useState<StrengthData>(
-    strengthInfo[passStrength]
-  );
+  let [strength, setStrength] = useState<StrengthData>(strengthInfo[passStrength]);
 
   let [passLength, setPassLength] = useState(6);
   const [rangeLength, setRangeLength] = useState(6);
@@ -98,9 +98,7 @@ const Generator = () => {
     setIsOptionsOpen(!isOptionsOpen);
   };
 
-  const changePassLengthInputHandler = (
-    e: SyntheticEvent<HTMLInputElement>
-  ) => {
+  const changePassLengthInputHandler = (e: SyntheticEvent<HTMLInputElement>) => {
     const val = +e.currentTarget.value;
     if (val > 64) {
       setRangeLength(64);
@@ -174,11 +172,7 @@ const Generator = () => {
           </div>
         </div>
         <div className="text-white mt-2 text-xl">
-          <h3>
-            {generatorType === "password"
-              ? "Password Generator"
-              : "Pass Phrase Generator"}
-          </h3>
+          <h3>{generatorType === "password" ? "Password Generator" : "Pass Phrase Generator"}</h3>
         </div>
         <section className="w-11/12 flex flex-col justify-center">
           <article className="flex mt-5">
@@ -205,51 +199,9 @@ const Generator = () => {
           {generatorType === "password" ? (
             <section className={`mt-4`}>
               {/* Validation */}
-              <ul
-                className={`flex flex-col mx-1 items-start rounded ${classes.errors}`}
-              >
+              <ul className={`flex flex-col mx-1 items-start rounded ${classes.errors}`}>
                 {errors.map((e: Error) => (
-                  <li
-                    key={e.id}
-                    className={`${
-                      e.valid ? "text-green-500" : "text-red-500"
-                    } flex items-center`}
-                  >
-                    <span className="mr-2">
-                      {e.valid ? (
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      ) : (
-                        <svg
-                          className="w-6 h-6"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M6 18L18 6M6 6l12 12"
-                          />
-                        </svg>
-                      )}
-                    </span>
-                    <span>{e.msg}</span>
-                  </li>
+                  <ErrorBox key={e.id} valid={e.valid} msg={e.msg} />
                 ))}
               </ul>
             </section>
@@ -261,26 +213,7 @@ const Generator = () => {
               onClick={optionsShowHandler}
             >
               <h3 className={`ml-2 ${classes.errors}`}>Options</h3>
-              <button
-                className={`transform ${
-                  isOptionsOpen ? "rotate-180" : "rotate-0"
-                } p-1 cursor-pointer mr-2`}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </button>
+              <ArrowButton isOptionsOpen={isOptionsOpen} />
             </div>
             <div className=" bg-[#4e4e4e33] flex justify-center rounded mt-3">
               <article
@@ -288,9 +221,7 @@ const Generator = () => {
                 style={{ height: isOptionsOpen ? "100%" : "1px" }}
               >
                 <p className={classes.option}>
-                  {generatorType === "password"
-                    ? "Password length"
-                    : "Number of Words"}
+                  {generatorType === "password" ? "Password length" : "Number of Words"}
                 </p>
                 <div className="flex items-center mt-2">
                   <input
@@ -311,10 +242,7 @@ const Generator = () => {
                     min={generatorType === "password" ? "6" : "3"}
                     max="48"
                     type="number"
-                    className={
-                      "bg-custom-grey rounded text-center" +
-                      ` ${classes.option}`
-                    }
+                    className={"bg-custom-grey rounded text-center" + ` ${classes.option}`}
                     value={rangeLength}
                     onChange={changePassLengthInputHandler}
                   />
@@ -337,9 +265,7 @@ const Generator = () => {
             <button
               className={
                 "w-full mt-4 h-12 rounded bg-custom-yellow text-black" +
-                ` ${classes.option} ${
-                  !canGenerate && "cursor-not-allowed bg-custom-grey"
-                }`
+                ` ${classes.option} ${!canGenerate && "cursor-not-allowed bg-custom-grey"}`
               }
               disabled={!canGenerate}
               onClick={() =>
@@ -362,9 +288,7 @@ const Generator = () => {
               disabled={!canGenerate}
               className={
                 "w-full my-4 h-12 rounded bg-custom-grey text-white" +
-                ` ${classes.option}  ${
-                  !canGenerate && "cursor-not-allowed bg-custom-grey"
-                }`
+                ` ${classes.option}  ${!canGenerate && "cursor-not-allowed bg-custom-grey"}`
               }
               onClick={copyPasswordHandler}
             >
@@ -380,11 +304,7 @@ const Generator = () => {
           target="_blank"
           rel="noreferrer"
         >
-          <img
-            className="mx-auto w-6"
-            src="./GitHub-Mark-Light-32px.png"
-            alt="github logo"
-          />
+          <img className="mx-auto w-6" src="./GitHub-Mark-Light-32px.png" alt="github logo" />
           <p>GitHub</p>
         </a>
       </footer>

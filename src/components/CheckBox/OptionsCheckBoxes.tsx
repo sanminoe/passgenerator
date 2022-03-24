@@ -1,5 +1,5 @@
 import { ChangeEventHandler, MouseEventHandler } from "react";
-import { Options } from "../types/PassGenerator";
+import { Options } from "../../types/PassGenerator";
 import OptionCheckBox from "./OptionCheckBox";
 
 interface PropsOptionsCheckBoxes {
